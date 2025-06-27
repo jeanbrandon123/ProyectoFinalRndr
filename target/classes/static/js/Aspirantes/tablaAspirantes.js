@@ -198,21 +198,37 @@ function configurarEventosCorreo() {
     });
 }
 
-// Función para enviar el correo individual
 function enviarCorreo() {
+    // 1. Obtener todos los valores correctamente
+    const form = $('#form-correo');
     const emailData = {
-        idAspirante: parseInt($('#id-aspirante').val()),
-        email: $('#email-aspirante').val(),
-        asunto: $('input[name="asunto"]').val(),
-        mensaje: $('textarea[name="mensaje"]').val()
+        idAspirante: parseInt(form.find('#id-aspirante').val()),
+        email: form.find('#email-aspirante').val(),
+        asunto: form.find('input[name="asunto"]').val().trim(),
+        mensaje: form.find('textarea[name="mensaje"]').val().trim() // ¡Corregí esta línea!
     };
 
+    // 2. Validación robusta
+    let isValid = true;
 
-    complete: function() {
-        $('#btn-enviar-correo').html('Enviar a todos');
-        $('#btn-enviar-correo').prop('disabled', false);
+    // Verificar campos visibles
+    if (emailData.asunto === "" || emailData.mensaje === "") {
+        isValid = false;
     }
 
+    // Verificar campos ocultos (importante)
+    if (!emailData.idAspirante || !emailData.email) {
+        isValid = false;
+    }
+
+    if (!isValid) {
+        alert('Por favor complete todos los campos con información válida');
+        return;
+    }
+
+    // 3. Configurar AJAX
+    const $btn = $('#btn-enviar-correo');
+    $btn.html('<span class="spinner-border spinner-border-sm"></span> Enviando...').prop('disabled', true);
 
     $.ajax({
         url: '/v1/api/email/enviar',
@@ -221,22 +237,18 @@ function enviarCorreo() {
         data: JSON.stringify(emailData),
         success: function(res) {
             if (res.estado === 1) {
-                alert('Correo enviado con éxito a ' + emailData.email);
+                alert('Correo enviado a ' + emailData.email);
                 $('#mensaje').modal('hide');
-                $('#form-correo')[0].reset();
+                form[0].reset();
             } else {
-                alert('Error al enviar el correo: ' + (res.mensaje || 'Error desconocido'));
+                alert('Error: ' + (res.mensaje || 'Servidor no respondió correctamente'));
             }
         },
         error: function(xhr) {
-            let errorMsg = 'Error al conectar con el servidor';
-            if (xhr.responseJSON && xhr.responseJSON.mensaje) {
-                errorMsg += ': ' + xhr.responseJSON.mensaje;
-            }
-
-            alert(errorMsg);
-            console.error('Detalles del error:', xhr.responseText);
-
+            alert('Error de conexión: ' + (xhr.responseJSON?.mensaje || xhr.statusText));
+        },
+        complete: function() {
+            $btn.html('Enviar').prop('disabled', false);
         }
     });
 }
