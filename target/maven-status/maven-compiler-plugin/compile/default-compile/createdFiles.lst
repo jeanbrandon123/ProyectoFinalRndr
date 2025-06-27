@@ -3,7 +3,10 @@ com\upiiz\ProyectoFinal\Repositories\AspirantesRepository.class
 com\upiiz\ProyectoFinal\Services\CarreraService.class
 com\upiiz\ProyectoFinal\Models\AspirantesModel.class
 com\upiiz\ProyectoFinal\Config\SesionInterceptor.class
+com\upiiz\ProyectoFinal\Controllers\EmailController.class
+com\upiiz\ProyectoFinal\Models\EmailModel.class
 com\upiiz\ProyectoFinal\Repositories\CarrerasRepository.class
+com\upiiz\ProyectoFinal\Services\EmailService.class
 com\upiiz\ProyectoFinal\Config\WebConfig.class
 com\upiiz\ProyectoFinal\Controllers\AdministradorController.class
 com\upiiz\ProyectoFinal\Services\AspiranteService.class

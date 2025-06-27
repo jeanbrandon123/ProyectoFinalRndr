@@ -1,12 +1,12 @@
-package com.upiiz.ProyectoFinal.Models;
+    package com.upiiz.ProyectoFinal.Models;
 
-public class AspirantesModel {
-    private Integer idAspirante;
-    private String nombreAspirante;
-    private String telefonoAspirante;
-    private String emailAspirante;
-    private Integer carreraId;
-    private String nombreCarrera;
+    public class AspirantesModel {
+        private Integer idAspirante;
+        private String nombreAspirante;
+        private String telefonoAspirante;
+        private String emailAspirante;
+        private Integer carreraId;
+        private String nombreCarrera;
 
     public AspirantesModel() {
     }

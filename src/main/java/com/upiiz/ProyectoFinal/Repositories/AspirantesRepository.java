@@ -13,5 +13,6 @@ public interface AspirantesRepository {
     public AspirantesModel saveAspirantes (AspirantesModel model);
     public Integer updateAspirantes (AspirantesModel model);
     public Integer deleteAspirantes (Integer id);
+    List<String> obtenerTodosEmails();
 
 }

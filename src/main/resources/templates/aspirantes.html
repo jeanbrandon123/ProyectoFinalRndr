@@ -644,7 +644,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            Datatable
+                            Aspirantes
                         </div>
                     </div>
                     <ul class="navbar-nav header-right">
@@ -885,17 +885,6 @@
                 </a>
                 </li>
 
-                <li><a href="#" class="" aria-expanded="false">
-                    <div class="menu-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.4" d="M16.0754 2H19.4614C20.8636 2 21.9999 3.14585 21.9999 4.55996V7.97452C21.9999 9.38864 20.8636 10.5345 19.4614 10.5345H16.0754C14.6731 10.5345 13.5369 9.38864 13.5369 7.97452V4.55996C13.5369 3.14585 14.6731 2 16.0754 2Z" fill="#763ed0"/>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.53852 2H7.92449C9.32676 2 10.463 3.14585 10.463 4.55996V7.97452C10.463 9.38864 9.32676 10.5345 7.92449 10.5345H4.53852C3.13626 10.5345 2 9.38864 2 7.97452V4.55996C2 3.14585 3.13626 2 4.53852 2ZM4.53852 13.4655H7.92449C9.32676 13.4655 10.463 14.6114 10.463 16.0255V19.44C10.463 20.8532 9.32676 22 7.92449 22H4.53852C3.13626 22 2 20.8532 2 19.44V16.0255C2 14.6114 3.13626 13.4655 4.53852 13.4655ZM19.4615 13.4655H16.0755C14.6732 13.4655 13.537 14.6114 13.537 16.0255V19.44C13.537 20.8532 14.6732 22 16.0755 22H19.4615C20.8637 22 22 20.8532 22 19.44V16.0255C22 14.6114 20.8637 13.4655 19.4615 13.4655Z" fill="#B9A8FF"/>
-                        </svg>
-                    </div>
-                    <span class="nav-text">Constancias</span>
-                </a>
-                </li>
-
                 <li><a href="/carreras" class="" aria-expanded="false">
                     <div class="menu-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -949,82 +938,70 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                         <h4 class="card-title mb-2 mb-md-0">Listado de Aspirantes</h4>
-
                         <div class="d-flex gap-2">
                             <!-- Botón de Correo Masivo -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCorreoMasivo">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMensajeMasivo">
                                 Correo masivo
                             </button>
-
-
-
                         </div>
                     </div>
-
-                    <!-- Modal Correo Masivo -->
-                        <div class="modal fade" id="ModalCorreoMasivo">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Correo masivo</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body"><div class="card-body">
-                                        <div class="basic-form">
-                                            <form>
-
-                                                <div class="row">
-                                                    <div class="mb-3 col-md-6">
-                                                        <label class="form-label">Asunto</label>
-                                                        <input type="text" class="form-control" placeholder="Indique asunto">
-                                                    </div>
-                                                    <div class="mb-3 col-md-6">
-                                                        <label class="form-label">Mensaje</label>
-                                                        <input type="text" class="form-control" indique mensaje="Email">
-                                                    </div>
-                                                </div>
-                                            </form>
+                        <!-- Modal Correo Masivo -->
+                    <div class="modal fade" id="modalMensajeMasivo">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Enviar correo a todos los aspirantes</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="formCorreoMasivo">
+                                        <div class="mb-3">
+                                            <label class="form-label">Asunto</label>
+                                            <input type="text" class="form-control" name="asunto" required>
                                         </div>
-                                    </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger light btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-primary btn-sm">Enviar</button>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Mensaje</label>
+                                            <textarea class="form-control" name="mensaje" rows="5" required></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" id="btnEnviarMasivo">Enviar a todos</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <!-- Modal Correo individual -->
                         <div class="modal fade" id="mensaje">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Correo a: </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                        </button>
+                                        <h5 class="modal-title">Correo a: <span id="destinatario-correo"></span></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
-                                    <div class="modal-body"><div class="card-body">
-                                        <div class="basic-form">
-                                            <form>
+                                    <div class="modal-body">
+                                        <div class="card-body">
+                                            <form id="form-correo">
+                                                <input type="hidden" id="id-aspirante" name="idAspirante">
+                                                <input type="hidden" id="email-aspirante" name="email">
 
                                                 <div class="row">
-                                                    <div class="mb-3 col-md-6">
+                                                    <div class="mb-3 col-md-12">
                                                         <label class="form-label">Asunto</label>
-                                                        <input type="text" class="form-control" placeholder="Indique asunto">
+                                                        <input type="text" class="form-control" name="asunto" placeholder="Indique asunto" required>
                                                     </div>
-                                                    <div class="mb-3 col-md-6">
+                                                    <div class="mb-3 col-md-12">
                                                         <label class="form-label">Mensaje</label>
-                                                        <input type="text" class="form-control" placeholder="Escriba mensaje">
+                                                        <textarea class="form-control" name="mensaje" rows="5" placeholder="Escriba mensaje" required></textarea>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
-                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger light btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-waring btn-sm">Enviar</button>
+                                        <button type="button" class="btn btn-warning btn-sm" id="btn-enviar-correo">Enviar</button>
                                     </div>
                                 </div>
                             </div>

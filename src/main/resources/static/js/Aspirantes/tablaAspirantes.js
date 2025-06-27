@@ -1,9 +1,11 @@
 let tablaAspirantes;
 let aspiranteActualId = 0;
+let emailAspiranteActual = '';
 
 $(document).ready(function() {
     inicializarTablaAspirantes();
     cargarAspirantes();
+    configurarEventosCorreo();
 });
 
 // Inicializa la tabla con columnas
@@ -25,7 +27,7 @@ function cargarAspirantes() {
                 res.aspirantes.forEach(asp => {
                     let botones = `
                         <div class="d-flex">
-                            <button type="button" class="btn btn-warning me-2 btn-mensaje" data-id="${asp.idAspirante}" data-bs-toggle="modal" data-bs-target="#mensaje">Mensaje</button>
+                            <button type="button" class="btn btn-warning me-2 btn-mensaje" data-id="${asp.idAspirante}" data-email="${asp.emailAspirante}" data-bs-toggle="modal" data-bs-target="#mensaje">Mensaje</button>
                             <button type="button" class="btn btn-info me-2 btn-ver" data-id="${asp.idAspirante}" data-bs-toggle="modal" data-bs-target="#informacion">Información</button>
                             <button type="button" class="btn btn-light me-2 btn-constancia" data-id="${asp.idAspirante}">Constancia</button>
                         </div>`;
@@ -47,6 +49,106 @@ function cargarAspirantes() {
         }
     });
 }
+
+// Configura los eventos para el envío de correos
+function configurarEventosCorreo() {
+    // Cuando se hace clic en el botón de mensaje
+    $(document).on('click', '.btn-mensaje', function() {
+        const idAspirante = $(this).data('id');
+        const email = $(this).data('email');
+
+        // Actualiza los campos ocultos y muestra el email en el modal
+        $('#id-aspirante').val(idAspirante);
+        $('#email-aspirante').val(email);
+        $('#destinatario-correo').text(email);
+        emailAspiranteActual = email;
+        aspiranteActualId = idAspirante;
+    });
+
+    // Cuando se hace clic en el botón de enviar correo
+    $('#btn-enviar-correo').click(function() {
+        enviarCorreo();
+    });
+}
+
+// Función para enviar el correo
+function enviarCorreo() {
+    const emailData = {
+        idAspirante: parseInt($('#id-aspirante').val()),
+        email: $('#email-aspirante').val(),
+        asunto: $('input[name="asunto"]').val(),
+        mensaje: $('textarea[name="mensaje"]').val()
+    };
+
+    // Validación básica
+    if (!emailData.asunto || !emailData.mensaje) {
+        alert('Por favor complete todos los campos');
+        return;
+    }
+    $.ajax({
+        url: '/v1/api/email/enviar', // Nueva ruta
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(emailData),
+        success: function(res) {
+            if (res.estado === 1) {
+                alert('Correo enviado con éxito a ' + emailData.email);
+                $('#mensaje').modal('hide');
+                $('#form-correo')[0].reset();
+            } else {
+                alert('Error al enviar el correo: ' + (res.mensaje || 'Error desconocido'));
+            }
+        },
+        error: function(xhr) {
+            let errorMsg = 'Error al conectar con el servidor';
+            if (xhr.responseJSON && xhr.responseJSON.mensaje) {
+                errorMsg += ': ' + xhr.responseJSON.mensaje;
+            }
+            alert(errorMsg);
+            console.error('Detalles del error:', xhr.responseText);
+        }
+    });
+}
+// Envío masivo de correos
+$('#btnEnviarMasivo').click(function() {
+    const asunto = $('input[name="asunto"]', '#formCorreoMasivo').val();
+    const mensaje = $('textarea[name="mensaje"]', '#formCorreoMasivo').val();
+
+    if (!asunto || !mensaje) {
+        alert('Por favor complete todos los campos');
+        return;
+    }
+
+    // Mostrar loading
+    $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...');
+    $(this).prop('disabled', true);
+
+    $.ajax({
+        url: '/v1/api/email/enviar-masivo',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data: {
+            asunto: asunto,
+            mensaje: mensaje
+        },
+        success: function(res) {
+            if (res.estado === 1) {
+                alert(`Correos enviados con éxito a ${res.total_enviados} destinatarios`);
+                $('#modalMensajeMasivo').modal('hide');
+                $('#formCorreoMasivo')[0].reset();
+            } else {
+                alert('Error: ' + res.mensaje);
+            }
+        },
+        error: function(xhr) {
+            alert('Error al enviar correos: ' + xhr.responseJSON?.mensaje || 'Error desconocido');
+        },
+        complete: function() {
+            $('#btnEnviarMasivo').html('Enviar a todos');
+            $('#btnEnviarMasivo').prop('disabled', false);
+        }
+    });
+});
 
 // Ver información
 $('#tablaAspirantes tbody').on('click', 'button.btn-ver', function () {
@@ -122,13 +224,10 @@ function generarConstanciaPDF(aspirante) {
     doc.setFillColor(128, 0, 32); // Color guinda (RGB)
     doc.rect(0, 0, 210, 30, 'F'); // Fondo rectangular
 
-// Título en blanco sobre fondo guinda
+    // Título en blanco sobre fondo guinda
     doc.setFontSize(18);
     doc.setTextColor(255, 255, 255); // Texto blanco
     doc.text("CONSTANCIA DE REGISTRO", 105, 20, null, null, "center");
-
-    // Logo institucional (simulado)
-    // doc.addImage(logoData, 'PNG', 160, 35, 30, 30);
 
     // Cuerpo del documento
     doc.setFontSize(12);
@@ -162,15 +261,12 @@ function generarConstanciaPDF(aspirante) {
     doc.setTextColor(150, 150, 150);
     doc.text("ATTE: EL DIRE", 105, y + 25, null, null, "center");
 
-
     doc.setFontSize(12);
     doc.setTextColor(80, 80, 80);
-    doc.text("Atentamente", 160, y + 40);  // Texto "Atentamente"
+    doc.text("Atentamente", 160, y + 40);
     doc.setFontSize(10);
-    doc.text("_________________________", 150, y + 50);  // Línea de firma (espacio amplio)
-    doc.text("Responsable de Admisiones", 150, y + 60);  // Cargo (más abajo)
-
-
+    doc.text("_________________________", 150, y + 50);
+    doc.text("Responsable de Admisiones", 150, y + 60);
 
     // Sello de agua (opcional)
     doc.setFontSize(60);

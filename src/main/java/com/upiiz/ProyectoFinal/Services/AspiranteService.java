@@ -88,4 +88,8 @@ public class AspiranteService implements AspirantesRepository {
     public Integer deleteAspirantes(Integer idAspirante) {
         return jdbcTemplate.update("DELETE FROM aspirantes WHERE idAspirante=?", idAspirante);
     }
+    public List<String> obtenerTodosEmails() {
+        String sql = "SELECT emailAspirante FROM aspirantes";
+        return jdbcTemplate.queryForList(sql, String.class);
+    }
 }

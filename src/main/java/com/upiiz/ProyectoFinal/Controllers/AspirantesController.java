@@ -1,7 +1,9 @@
 package com.upiiz.ProyectoFinal.Controllers;
 
 import com.upiiz.ProyectoFinal.Models.AspirantesModel;
+import com.upiiz.ProyectoFinal.Models.EmailModel;
 import com.upiiz.ProyectoFinal.Services.AspiranteService;
+import com.upiiz.ProyectoFinal.Services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,9 @@ public class AspirantesController {
 
     @Autowired
     private AspiranteService aspiranteService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/aspirantes")
     public String aspirantes() {
