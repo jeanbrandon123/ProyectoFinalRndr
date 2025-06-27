@@ -1,0 +1,15 @@
+com\upiiz\ProyectoFinal\Controllers\RegistroController.class
+com\upiiz\ProyectoFinal\Repositories\AspirantesRepository.class
+com\upiiz\ProyectoFinal\Services\CarreraService.class
+com\upiiz\ProyectoFinal\Models\AspirantesModel.class
+com\upiiz\ProyectoFinal\Config\SesionInterceptor.class
+com\upiiz\ProyectoFinal\Repositories\CarrerasRepository.class
+com\upiiz\ProyectoFinal\Config\WebConfig.class
+com\upiiz\ProyectoFinal\Controllers\AdministradorController.class
+com\upiiz\ProyectoFinal\Services\AspiranteService.class
+com\upiiz\ProyectoFinal\Models\CarrerasModel.class
+com\upiiz\ProyectoFinal\Controllers\HomeController.class
+com\upiiz\ProyectoFinal\Controllers\AspirantesController.class
+com\upiiz\ProyectoFinal\ProyectoFinalApplication.class
+com\upiiz\ProyectoFinal\Controllers\LoginApiController.class
+com\upiiz\ProyectoFinal\Controllers\CarrerasController.class
