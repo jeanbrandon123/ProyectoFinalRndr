@@ -210,6 +210,7 @@ function enviarCorreo() {
 
 
 
+
     $.ajax({
         url: '/v1/api/email/enviar',
         type: 'POST',
@@ -229,8 +230,10 @@ function enviarCorreo() {
             if (xhr.responseJSON && xhr.responseJSON.mensaje) {
                 errorMsg += ': ' + xhr.responseJSON.mensaje;
             }
+
             alert(errorMsg);
             console.error('Detalles del error:', xhr.responseText);
+
         }
     });
 }

@@ -208,6 +208,10 @@ function enviarCorreo() {
     };
 
 
+    complete: function() {
+        $('#btn-enviar-correo').html('Enviar a todos');
+        $('#btn-enviar-correo').prop('disabled', false);
+    }
 
 
     $.ajax({
@@ -229,8 +233,10 @@ function enviarCorreo() {
             if (xhr.responseJSON && xhr.responseJSON.mensaje) {
                 errorMsg += ': ' + xhr.responseJSON.mensaje;
             }
+
             alert(errorMsg);
             console.error('Detalles del error:', xhr.responseText);
+
         }
     });
 }
